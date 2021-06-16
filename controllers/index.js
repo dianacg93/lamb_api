@@ -1,4 +1,26 @@
 const LambRecipe = require("../models/lambRecipe");
+const Country = require("../models/country");
+
+const getAllCountries = async (req, res) => {
+    try {
+      const countries = await Country.find();
+      return res.status(200).send(countries);
+    } catch (error) {
+      return res.status(500).json({ error: error.message });
+    }
+  };
+  const getCountryById = async (req, res) => {
+    try {
+      const { id } = req.params;
+      const countryId = await Country.findById(id);
+      if (countryId) {
+        return res.status(200).send(countryId);
+      }
+      return res.status(404).send("Country with the specified ID does not exist");
+    } catch (error) {
+      return res.status(500).send(error.message);
+    }
+  };
 
 const getAllRecipes = async (req, res) => {
     try {
@@ -75,7 +97,9 @@ const deleteRecipe = async (req, res) => {
     }
 }
 
-module.export = {
+module.exports = {
+    getAllCountries,
+    getCountryById,
     getAllRecipes,
     createRecipe,
     getRecipeById,
